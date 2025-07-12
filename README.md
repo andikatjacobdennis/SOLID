@@ -239,60 +239,68 @@ class Program
 ```csharp
 using System;
 
-// Base class for shapes
-public class Rectangle
+namespace LSPExample
 {
-    protected double width;
-    protected double height;
-
-    public Rectangle(double w, double h)
+    // Interface that both shapes will implement
+    public interface IShape
     {
-        width = w;
-        height = h;
+        int GetArea();
     }
 
-    public virtual double Area()
+    // Rectangle implementation
+    public class Rectangle : IShape
     {
-        return width * height;
+        public int Width { get; set; }
+        public int Height { get; set; }
+
+        public Rectangle(int width, int height)
+        {
+            Width = width;
+            Height = height;
+        }
+
+        public int GetArea()
+        {
+            return Width * Height;
+        }
     }
 
-    public double GetWidth() => width;
-    public double GetHeight() => height;
-
-    public virtual void SetWidth(double w) => width = w;
-    public virtual void SetHeight(double h) => height = h;
-}
-
-// Derived class for squares
-public class Square : Rectangle
-{
-    public Square(double size) : base(size, size) { }
-
-    public override void SetWidth(double w)
+    // Square implementation using composition, not inheritance
+    public class Square : IShape
     {
-        width = height = w; // Ensure both width and height remain same
+        public int Side { get; set; }
+
+        public Square(int side)
+        {
+            Side = side;
+        }
+
+        public int GetArea()
+        {
+            return Side * Side;
+        }
     }
 
-    public override void SetHeight(double h)
+    // A utility class to demonstrate LSP
+    public class AreaCalculator
     {
-        height = width = h; // Ensure both width and height remain same
+        public static void PrintArea(IShape shape)
+        {
+            Console.WriteLine("Area: " + shape.GetArea());
+        }
     }
-}
 
-class Program
-{
-    static void Main()
+    // Test the implementation
+    class Program
     {
-        Rectangle rect = new Rectangle(5, 4);
-        Console.WriteLine($"Rectangle area: {rect.Area()}"); // 20
-        
-        Square square = new Square(5);
-        Console.WriteLine($"Square area: {square.Area()}"); // 25
-        
-        // LSP violation demonstration
-        Rectangle rectAsSquare = new Square(5);
-        rectAsSquare.SetWidth(4);
-        Console.WriteLine($"Area after setting width: {rectAsSquare.Area()}"); // 16 (not 20 as expected for rectangle)
+        static void Main(string[] args)
+        {
+            IShape rectangle = new Rectangle(5, 10);
+            IShape square = new Square(5);
+
+            AreaCalculator.PrintArea(rectangle); // Output: Area: 50
+            AreaCalculator.PrintArea(square);    // Output: Area: 25
+        }
     }
 }
 ```
