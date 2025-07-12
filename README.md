@@ -138,7 +138,7 @@ class Program
 
 **Software entities (classes, modules, functions, etc.) should be open for extension, but closed for modification**
 
-### Anti OCP example
+### C# Code Example (Anti-OCP)
 
 ```csharp
 using System;
@@ -170,6 +170,53 @@ class Program
         
         processor.ProcessPayment("creditcard", 100.00);
         processor.ProcessPayment("paypal", 150.00);
+    }
+}
+```
+
+### C# Code Solution (OCP)
+
+```csharp
+using System;
+
+// Base interface for payment processing
+public interface IPaymentProcessor
+{
+    void ProcessPayment(double amount);
+}
+
+// Credit card payment processor
+public class CreditCardPaymentProcessor : IPaymentProcessor
+{
+    public void ProcessPayment(double amount)
+    {
+        Console.WriteLine($"Processing credit card payment of ${amount}");
+    }
+}
+
+// PayPal payment processor
+public class PayPalPaymentProcessor : IPaymentProcessor
+{
+    public void ProcessPayment(double amount)
+    {
+        Console.WriteLine($"Processing PayPal payment of ${amount}");
+    }
+}
+
+class Program
+{
+    static void ProcessPayment(IPaymentProcessor processor, double amount)
+    {
+        processor.ProcessPayment(amount);
+    }
+
+    static void Main()
+    {
+        var creditCardProcessor = new CreditCardPaymentProcessor();
+        var payPalProcessor = new PayPalPaymentProcessor();
+        
+        ProcessPayment(creditCardProcessor, 100.00);
+        ProcessPayment(payPalProcessor, 150.00);
     }
 }
 ```
@@ -221,51 +268,6 @@ sequenceDiagram
     Program->>Program: ProcessPayment(payPalProcessor, 150.00)
     Program->>PayPalProcessor: ProcessPayment(150.00)
     PayPalProcessor-->>Program: [Console Output]
-```
-
-```csharp
-using System;
-
-// Base interface for payment processing
-public interface IPaymentProcessor
-{
-    void ProcessPayment(double amount);
-}
-
-// Credit card payment processor
-public class CreditCardPaymentProcessor : IPaymentProcessor
-{
-    public void ProcessPayment(double amount)
-    {
-        Console.WriteLine($"Processing credit card payment of ${amount}");
-    }
-}
-
-// PayPal payment processor
-public class PayPalPaymentProcessor : IPaymentProcessor
-{
-    public void ProcessPayment(double amount)
-    {
-        Console.WriteLine($"Processing PayPal payment of ${amount}");
-    }
-}
-
-class Program
-{
-    static void ProcessPayment(IPaymentProcessor processor, double amount)
-    {
-        processor.ProcessPayment(amount);
-    }
-
-    static void Main()
-    {
-        var creditCardProcessor = new CreditCardPaymentProcessor();
-        var payPalProcessor = new PayPalPaymentProcessor();
-        
-        ProcessPayment(creditCardProcessor, 100.00);
-        ProcessPayment(payPalProcessor, 150.00);
-    }
-}
 ```
 
 ## 3. Liskov's Substitution Principle
