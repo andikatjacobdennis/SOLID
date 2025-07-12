@@ -1,6 +1,6 @@
 # SOLID
 
-## 1. Single Responsibility Principle(Bakery Example)
+## 1. Single Responsibility Principle
 
 **A class should have only one reason to change**
 
@@ -134,7 +134,7 @@ class Program
 }
 ```
 
-## 2. Open/Closed Principle (Payment Processor Example)
+## 2. Open/Closed Principle
 
 **Software entities (classes, modules, functions, etc.) should be open for extension, but closed for modification**
 
@@ -232,7 +232,7 @@ class Program
 }
 ```
 
-## 3. Liskov's Substitution Principle (Rectangle/Square Example)
+## 3. Liskov's Substitution Principle
 
 **Derived or child classes must be substitutable for their base or parent classes**
 
@@ -365,7 +365,7 @@ namespace LSPExample
 }
 ```
 
-## 4. Interface Segregation Principle (Restaurant Menu Example)
+## 4. Interface Segregation Principle
 
 **Do not force any client to implement an interface which is irrelevant to them.**
 
@@ -431,7 +431,7 @@ class Program
 }
 ```
 
-## 5. Dependency Inversion Principle (Version Control Example)
+## 5. Dependency Inversion Principle
 
 **High-level modules should not depend on low-level modules. Both should depend on abstractions**
 
