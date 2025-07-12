@@ -534,62 +534,83 @@ sequenceDiagram
 
 **Do not force any client to implement an interface which is irrelevant to them.**
 
-### Class Diagram
+### C# Code Example (Anti-ISP)
 
-```mermaid
-classDiagram
-    class IPrinter {
-        +Print(string document)
+```csarp
+using System;
+
+// Violates ISP: Large interface forces implementation of all members
+public interface IMultiFunctionDevice
+{
+    void Print(string document);
+    void Scan(string document);
+    void Fax(string document);
+}
+
+// BasicPrinter only wants to print, but must implement unused methods
+public class BasicPrinter : IMultiFunctionDevice
+{
+    public void Print(string document)
+    {
+        Console.WriteLine($"Printing: {document}");
     }
 
-    class IScanner {
-        +Scan(string document)
+    public void Scan(string document)
+    {
+        throw new NotImplementedException("Scan not supported by BasicPrinter.");
     }
 
-    class IFax {
-        +Fax(string document)
+    public void Fax(string document)
+    {
+        throw new NotImplementedException("Fax not supported by BasicPrinter.");
+    }
+}
+
+// AdvancedPrinter supports all operations, so it's fine here
+public class AdvancedPrinter : IMultiFunctionDevice
+{
+    public void Print(string document)
+    {
+        Console.WriteLine($"Printing: {document}");
     }
 
-    class BasicPrinter {
-        +Print(string document)
+    public void Scan(string document)
+    {
+        Console.WriteLine($"Scanning: {document}");
     }
 
-    class AdvancedPrinter {
-        +Print(string document)
-        +Scan(string document)
-        +Fax(string document)
+    public void Fax(string document)
+    {
+        Console.WriteLine($"Faxing: {document}");
     }
+}
 
-    class Program {
-        +Main()
+// Example usage
+class Program
+{
+    static void Main()
+    {
+        IMultiFunctionDevice basicPrinter = new BasicPrinter();
+        basicPrinter.Print("Basic Document");
+
+        try
+        {
+            basicPrinter.Scan("Basic Document"); // Will throw exception
+        }
+        catch (NotImplementedException e)
+        {
+            Console.WriteLine(e.Message);
+        }
+
+        IMultiFunctionDevice advancedPrinter = new AdvancedPrinter();
+        advancedPrinter.Print("Advanced Document");
+        advancedPrinter.Scan("Advanced Document");
+        advancedPrinter.Fax("Advanced Document");
     }
-
-    IPrinter <|.. BasicPrinter
-    IPrinter <|.. AdvancedPrinter
-    IScanner <|.. AdvancedPrinter
-    IFax <|.. AdvancedPrinter
+}
 ```
 
-### Sequence Diagram
-
-```mermaid
-sequenceDiagram
-    participant Main
-    participant BasicPrinter as BasicPrinter : IPrinter
-    participant AdvancedPrinter as AdvancedPrinter : IPrinter, IScanner, IFax
-
-    Main->>BasicPrinter: Print("Basic Document")
-    BasicPrinter-->>Main: Console.WriteLine("Printing: Basic Document")
-
-    Main->>AdvancedPrinter: Print("Advanced Document")
-    AdvancedPrinter-->>Main: Console.WriteLine("Printing: Advanced Document")
-
-    Main->>AdvancedPrinter: Scan("Advanced Document")
-    AdvancedPrinter-->>Main: Console.WriteLine("Scanning: Advanced Document")
-
-    Main->>AdvancedPrinter: Fax("Advanced Document")
-    AdvancedPrinter-->>Main: Console.WriteLine("Faxing: Advanced Document")
-```
+### C# Code Solution (ISP)
 
 ```csharp
 using System;
@@ -651,6 +672,63 @@ class Program
         advancedPrinter.Fax("Advanced Document");
     }
 }
+```
+
+### Class Diagram
+
+```mermaid
+classDiagram
+    class IPrinter {
+        +Print(string document)
+    }
+
+    class IScanner {
+        +Scan(string document)
+    }
+
+    class IFax {
+        +Fax(string document)
+    }
+
+    class BasicPrinter {
+        +Print(string document)
+    }
+
+    class AdvancedPrinter {
+        +Print(string document)
+        +Scan(string document)
+        +Fax(string document)
+    }
+
+    class Program {
+        +Main()
+    }
+
+    IPrinter <|.. BasicPrinter
+    IPrinter <|.. AdvancedPrinter
+    IScanner <|.. AdvancedPrinter
+    IFax <|.. AdvancedPrinter
+```
+
+### Sequence Diagram
+
+```mermaid
+sequenceDiagram
+    participant Main
+    participant BasicPrinter as BasicPrinter : IPrinter
+    participant AdvancedPrinter as AdvancedPrinter : IPrinter, IScanner, IFax
+
+    Main->>BasicPrinter: Print("Basic Document")
+    BasicPrinter-->>Main: Console.WriteLine("Printing: Basic Document")
+
+    Main->>AdvancedPrinter: Print("Advanced Document")
+    AdvancedPrinter-->>Main: Console.WriteLine("Printing: Advanced Document")
+
+    Main->>AdvancedPrinter: Scan("Advanced Document")
+    AdvancedPrinter-->>Main: Console.WriteLine("Scanning: Advanced Document")
+
+    Main->>AdvancedPrinter: Fax("Advanced Document")
+    AdvancedPrinter-->>Main: Console.WriteLine("Faxing: Advanced Document")
 ```
 
 ## 5. Dependency Inversion Principle
