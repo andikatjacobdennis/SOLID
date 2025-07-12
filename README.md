@@ -657,62 +657,81 @@ class Program
 
 **High-level modules should not depend on low-level modules. Both should depend on abstractions**
 
-### Class Diagram
+### C# Code Example (Anti-DIP)
 
-```mermaid
-classDiagram
-    class IDataSource {
-        +List~string~ GetData()
+```csharp
+using System;
+using System.Collections.Generic;
+
+// 1. Low-level module: Database data source
+public class DatabaseDataSource
+{
+    public List<string> GetData()
+    {
+        // Simulate fetching data from a database
+        return new List<string> { "DB Record 1", "DB Record 2", "DB Record 3" };
+    }
+}
+
+// 2. Low-level module: API data source
+public class APIDataSource
+{
+    public List<string> GetData()
+    {
+        // Simulate fetching data from an API
+        return new List<string> { "API Data 1", "API Data 2" };
+    }
+}
+
+// 3. High-level module: Report class (tightly coupled to low-level modules)
+public class Report
+{
+    private readonly DatabaseDataSource _dbSource;
+    private readonly APIDataSource _apiSource;
+
+    public Report()
+    {
+        // Direct instantiation (tight coupling)
+        _dbSource = new DatabaseDataSource();
+        _apiSource = new APIDataSource();
     }
 
-    class DatabaseDataSource {
-        +List~string~ GetData()
+    public void GenerateFromDatabase()
+    {
+        List<string> data = _dbSource.GetData();
+        Console.WriteLine("Report from Database:");
+        foreach (string item in data)
+        {
+            Console.WriteLine($"- {item}");
+        }
     }
 
-    class APIDataSource {
-        +List~string~ GetData()
+    public void GenerateFromAPI()
+    {
+        List<string> data = _apiSource.GetData();
+        Console.WriteLine("Report from API:");
+        foreach (string item in data)
+        {
+            Console.WriteLine($"- {item}");
+        }
     }
+}
 
-    class Report {
-        -IDataSource _dataSource
-        +Report(IDataSource dataSource)
-        +void Generate()
+// 4. Program entry point
+public class Program
+{
+    public static void Main(string[] args)
+    {
+        Report report = new Report();
+
+        report.GenerateFromDatabase();
+        Console.WriteLine();
+        report.GenerateFromAPI();
     }
-
-    class Program {
-        +void Main(string[] args)
-    }
-
-    IDataSource <|.. DatabaseDataSource
-    IDataSource <|.. APIDataSource
-    Report --> IDataSource : uses
-    Program --> Report : creates
+}
 ```
 
-### Sequence Diagram
-
-```mermaid
-sequenceDiagram
-    participant Main
-    participant Report
-    participant IDataSource
-    participant DatabaseDataSource
-    participant APIDataSource
-
-    Main->>DatabaseDataSource: new DatabaseDataSource()
-    Main->>Report: new Report(DatabaseDataSource)
-    Main->>Report: Generate()
-    Report->>DatabaseDataSource: GetData()
-    DatabaseDataSource-->>Report: List<string>
-    Report-->>Main: Output report from DB
-
-    Main->>APIDataSource: new APIDataSource()
-    Main->>Report: new Report(APIDataSource)
-    Main->>Report: Generate()
-    Report->>APIDataSource: GetData()
-    APIDataSource-->>Report: List<string>
-    Report-->>Main: Output report from API
-```
+### C# Code Solution (DIP)
 
 ```csharp
 using System;
@@ -785,3 +804,62 @@ public class Program
     }
 }
 ```
+
+### Class Diagram
+
+```mermaid
+classDiagram
+    class IDataSource {
+        +List~string~ GetData()
+    }
+
+    class DatabaseDataSource {
+        +List~string~ GetData()
+    }
+
+    class APIDataSource {
+        +List~string~ GetData()
+    }
+
+    class Report {
+        -IDataSource _dataSource
+        +Report(IDataSource dataSource)
+        +void Generate()
+    }
+
+    class Program {
+        +void Main(string[] args)
+    }
+
+    IDataSource <|.. DatabaseDataSource
+    IDataSource <|.. APIDataSource
+    Report --> IDataSource : uses
+    Program --> Report : creates
+```
+
+### Sequence Diagram
+
+```mermaid
+sequenceDiagram
+    participant Main
+    participant Report
+    participant IDataSource
+    participant DatabaseDataSource
+    participant APIDataSource
+
+    Main->>DatabaseDataSource: new DatabaseDataSource()
+    Main->>Report: new Report(DatabaseDataSource)
+    Main->>Report: Generate()
+    Report->>DatabaseDataSource: GetData()
+    DatabaseDataSource-->>Report: List<string>
+    Report-->>Main: Output report from DB
+
+    Main->>APIDataSource: new APIDataSource()
+    Main->>Report: new Report(APIDataSource)
+    Main->>Report: Generate()
+    Report->>APIDataSource: GetData()
+    APIDataSource-->>Report: List<string>
+    Report-->>Main: Output report from API
+```
+
+
