@@ -3,6 +3,8 @@
 
 ## 1. Single Responsibility Principle(Bakery Example)
 
+**A class should have only one reason to change**
+
 ```csharp
 using System;
 
@@ -73,6 +75,8 @@ class Program
 
 ## 2. Open/Closed Principle (Payment Processor Example)
 
+**Software entities (classes, modules, functions, etc.) should be open for extension, but closed for modification**
+
 ```csharp
 using System;
 
@@ -119,6 +123,8 @@ class Program
 ```
 
 ## 3. Liskov's Substitution Principle (Rectangle/Square Example)
+
+**Derived or child classes must be substitutable for their base or parent classes**
 
 ```csharp
 using System;
@@ -182,6 +188,8 @@ class Program
 ```
 
 ## 4. Interface Segregation Principle (Restaurant Menu Example)
+
+**Do not force any client to implement an interface which is irrelevant to them.**
 
 ```csharp
 using System;
@@ -265,6 +273,8 @@ class Program
 ```
 
 ## 5. Dependency Inversion Principle (Version Control Example)
+
+**High-level modules should not depend on low-level modules. Both should depend on abstractions**
 
 ```csharp
 using System;
