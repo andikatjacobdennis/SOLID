@@ -1,9 +1,70 @@
 # SOLID
 
-
 ## 1. Single Responsibility Principle(Bakery Example)
 
 **A class should have only one reason to change**
+
+### Class Diagram
+
+```mermaid
+classDiagram
+    class BreadBaker {
+        +BakeBread()
+    }
+
+    class InventoryManager {
+        +ManageInventory()
+    }
+
+    class SupplyOrder {
+        +OrderSupplies()
+    }
+
+    class CustomerService {
+        +ServeCustomer()
+    }
+
+    class BakeryCleaner {
+        +CleanBakery()
+    }
+
+    class Program {
+        +Main()
+    }
+
+    Program --> BreadBaker : uses
+    Program --> InventoryManager : uses
+    Program --> SupplyOrder : uses
+    Program --> CustomerService : uses
+    Program --> BakeryCleaner : uses
+```
+
+### Sequence Diagram
+
+```mermaid
+sequenceDiagram
+    participant Program
+    participant BreadBaker
+    participant InventoryManager
+    participant SupplyOrder
+    participant CustomerService
+    participant BakeryCleaner
+
+    Program->>BreadBaker: BakeBread()
+    BreadBaker-->>Program: "Baking high-quality bread..."
+
+    Program->>InventoryManager: ManageInventory()
+    InventoryManager-->>Program: "Managing inventory..."
+
+    Program->>SupplyOrder: OrderSupplies()
+    SupplyOrder-->>Program: "Ordering supplies..."
+
+    Program->>CustomerService: ServeCustomer()
+    CustomerService-->>Program: "Serving customers..."
+
+    Program->>BakeryCleaner: CleanBakery()
+    BakeryCleaner-->>Program: "Cleaning the bakery..."
+```
 
 ```csharp
 using System;
@@ -76,6 +137,55 @@ class Program
 ## 2. Open/Closed Principle (Payment Processor Example)
 
 **Software entities (classes, modules, functions, etc.) should be open for extension, but closed for modification**
+
+### Mermaid Class Diagram
+
+```mermaid
+classDiagram
+    class IPaymentProcessor {
+        +void ProcessPayment(double amount)
+    }
+
+    class CreditCardPaymentProcessor {
+        +void ProcessPayment(double amount)
+    }
+
+    class PayPalPaymentProcessor {
+        +void ProcessPayment(double amount)
+    }
+
+    class Program {
+        +static void ProcessPayment(IPaymentProcessor processor, double amount)
+        +static void Main()
+    }
+
+    IPaymentProcessor <|.. CreditCardPaymentProcessor
+    IPaymentProcessor <|.. PayPalPaymentProcessor
+    Program ..> IPaymentProcessor : uses
+
+```
+
+### Mermaid Sequence Diagram
+
+```mermaid
+sequenceDiagram
+    participant Main
+    participant Program
+    participant CreditCardProcessor as CreditCardPaymentProcessor
+    participant PayPalProcessor as PayPalPaymentProcessor
+
+    Main->>Program: Main()
+    Program->>CreditCardProcessor: new CreditCardPaymentProcessor()
+    Program->>PayPalProcessor: new PayPalPaymentProcessor()
+
+    Program->>Program: ProcessPayment(creditCardProcessor, 100.00)
+    Program->>CreditCardProcessor: ProcessPayment(100.00)
+    CreditCardProcessor-->>Program: [Console Output]
+
+    Program->>Program: ProcessPayment(payPalProcessor, 150.00)
+    Program->>PayPalProcessor: ProcessPayment(150.00)
+    PayPalProcessor-->>Program: [Console Output]
+```
 
 ```csharp
 using System;
@@ -345,13 +455,3 @@ class Program
     }
 }
 ```
-
-Each of these examples follows the exact same scenarios as presented in the article, but implemented in C# with complete, working code. The principles are demonstrated through:
-
-1. SRP: Separate classes for each bakery responsibility
-2. OCP: Extending payment processors without modifying existing code
-3. LSP: The rectangle/square inheritance problem
-4. ISP: Segregated menu interfaces
-5. DIP: Abstract version control dependency
-
-All examples include the complete program structure with Main methods so they can be run and tested directly.
