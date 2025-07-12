@@ -4,67 +4,58 @@
 
 **A class should have only one reason to change**
 
-### Class Diagram
+### C# Code Example (Anti-OCP)
 
-```mermaid
-classDiagram
-    class BreadBaker {
-        +BakeBread()
+```csharp
+using System;
+
+// This class does too many things and violates the Single Responsibility Principle
+public class BakeryManager
+{
+    public void BakeBread()
+    {
+        Console.WriteLine("Baking high-quality bread...");
     }
 
-    class InventoryManager {
-        +ManageInventory()
+    public void ManageInventory()
+    {
+        Console.WriteLine("Managing inventory...");
     }
 
-    class SupplyOrder {
-        +OrderSupplies()
+    public void OrderSupplies()
+    {
+        Console.WriteLine("Ordering supplies...");
     }
 
-    class CustomerService {
-        +ServeCustomer()
+    public void ServeCustomer()
+    {
+        Console.WriteLine("Serving customers...");
     }
 
-    class BakeryCleaner {
-        +CleanBakery()
+    public void CleanBakery()
+    {
+        Console.WriteLine("Cleaning the bakery...");
     }
+}
 
-    class Program {
-        +Main()
+class Program
+{
+    static void Main()
+    {
+        var manager = new BakeryManager();
+
+        // One class is handling all responsibilities
+        manager.BakeBread();
+        manager.ManageInventory();
+        manager.OrderSupplies();
+        manager.ServeCustomer();
+        manager.CleanBakery();
     }
-
-    Program --> BreadBaker : uses
-    Program --> InventoryManager : uses
-    Program --> SupplyOrder : uses
-    Program --> CustomerService : uses
-    Program --> BakeryCleaner : uses
+}
 ```
 
-### Sequence Diagram
+### C# Code Solution (SRP)
 
-```mermaid
-sequenceDiagram
-    participant Program
-    participant BreadBaker
-    participant InventoryManager
-    participant SupplyOrder
-    participant CustomerService
-    participant BakeryCleaner
-
-    Program->>BreadBaker: BakeBread()
-    BreadBaker-->>Program: "Baking high-quality bread..."
-
-    Program->>InventoryManager: ManageInventory()
-    InventoryManager-->>Program: "Managing inventory..."
-
-    Program->>SupplyOrder: OrderSupplies()
-    SupplyOrder-->>Program: "Ordering supplies..."
-
-    Program->>CustomerService: ServeCustomer()
-    CustomerService-->>Program: "Serving customers..."
-
-    Program->>BakeryCleaner: CleanBakery()
-    BakeryCleaner-->>Program: "Cleaning the bakery..."
-```
 
 ```csharp
 using System;
@@ -132,6 +123,68 @@ class Program
         cleaner.CleanBakery();
     }
 }
+```
+
+### Class Diagram
+
+```mermaid
+classDiagram
+    class BreadBaker {
+        +BakeBread()
+    }
+
+    class InventoryManager {
+        +ManageInventory()
+    }
+
+    class SupplyOrder {
+        +OrderSupplies()
+    }
+
+    class CustomerService {
+        +ServeCustomer()
+    }
+
+    class BakeryCleaner {
+        +CleanBakery()
+    }
+
+    class Program {
+        +Main()
+    }
+
+    Program --> BreadBaker : uses
+    Program --> InventoryManager : uses
+    Program --> SupplyOrder : uses
+    Program --> CustomerService : uses
+    Program --> BakeryCleaner : uses
+```
+
+### Sequence Diagram
+
+```mermaid
+sequenceDiagram
+    participant Program
+    participant BreadBaker
+    participant InventoryManager
+    participant SupplyOrder
+    participant CustomerService
+    participant BakeryCleaner
+
+    Program->>BreadBaker: BakeBread()
+    BreadBaker-->>Program: "Baking high-quality bread..."
+
+    Program->>InventoryManager: ManageInventory()
+    InventoryManager-->>Program: "Managing inventory..."
+
+    Program->>SupplyOrder: OrderSupplies()
+    SupplyOrder-->>Program: "Ordering supplies..."
+
+    Program->>CustomerService: ServeCustomer()
+    CustomerService-->>Program: "Serving customers..."
+
+    Program->>BakeryCleaner: CleanBakery()
+    BakeryCleaner-->>Program: "Cleaning the bakery..."
 ```
 
 ## 2. Open/Closed Principle
