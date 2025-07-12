@@ -429,21 +429,6 @@ class Program
         advancedPrinter.Fax("Advanced Document");
     }
 }
-    class Program
-    {
-        static void Main()
-        {
-            IPrinter basic = new BasicPrinter();
-            basic.Print("Basic Document");
-
-            // Using AdvancedPrinter through its full class, not interfaces
-            AdvancedPrinter advanced = new AdvancedPrinter();
-            advanced.Print("Advanced Document");
-            advanced.Scan("Advanced Document");
-            advanced.Fax("Advanced Document");
-        }
-    }
-}
 ```
 
 ## 5. Dependency Inversion Principle (Version Control Example)
@@ -452,70 +437,72 @@ class Program
 
 ```csharp
 using System;
+using System.Collections.Generic;
 
-// Interface for version control system
-public interface IVersionControl
+// 1. The abstraction
+public interface IDataSource
 {
-    void Commit(string message);
-    void Push();
-    void Pull();
+    List<string> GetData();
 }
 
-// Git version control implementation
-public class GitVersionControl : IVersionControl
+// 2. Low-level module: Database data source
+public class DatabaseDataSource : IDataSource
 {
-    public void Commit(string message)
+    public List<string> GetData()
     {
-        Console.WriteLine($"Committing changes to Git with message: {message}");
-    }
-
-    public void Push()
-    {
-        Console.WriteLine("Pushing changes to remote Git repository.");
-    }
-
-    public void Pull()
-    {
-        Console.WriteLine("Pulling changes from remote Git repository.");
+        // Simulate fetching data from a database
+        return new List<string> { "DB Record 1", "DB Record 2", "DB Record 3" };
     }
 }
 
-// Team class that relies on version control
-public class DevelopmentTeam
+// 3. Low-level module: API data source
+public class APIDataSource : IDataSource
 {
-    private readonly IVersionControl _versionControl;
-
-    public DevelopmentTeam(IVersionControl versionControl)
+    public List<string> GetData()
     {
-        _versionControl = versionControl;
-    }
-
-    public void MakeCommit(string message)
-    {
-        _versionControl.Commit(message);
-    }
-
-    public void PerformPush()
-    {
-        _versionControl.Push();
-    }
-
-    public void PerformPull()
-    {
-        _versionControl.Pull();
+        // Simulate fetching data from an API
+        return new List<string> { "API Data 1", "API Data 2" };
     }
 }
 
-class Program
+// 4. High-level module: Report class
+public class Report
 {
-    static void Main()
+    private readonly IDataSource _dataSource;
+
+    // Dependency Injection via constructor
+    public Report(IDataSource dataSource)
     {
-        var git = new GitVersionControl();
-        var team = new DevelopmentTeam(git);
-        
-        team.MakeCommit("Initial commit");
-        team.PerformPush();
-        team.PerformPull();
+        _dataSource = dataSource;
+    }
+
+    public void Generate()
+    {
+        List<string> data = _dataSource.GetData();
+        Console.WriteLine("Report Content:");
+        foreach (string item in data)
+        {
+            Console.WriteLine($"- {item}");
+        }
+    }
+}
+
+// 5. Program entry point
+public class Program
+{
+    public static void Main(string[] args)
+    {
+        // Easily switch data sources here
+        IDataSource dbSource = new DatabaseDataSource();
+        IDataSource apiSource = new APIDataSource();
+
+        Console.WriteLine("Using DatabaseDataSource:");
+        Report reportFromDb = new Report(dbSource);
+        reportFromDb.Generate();
+
+        Console.WriteLine("\nUsing APIDataSource:");
+        Report reportFromApi = new Report(apiSource);
+        reportFromApi.Generate();
     }
 }
 ```
