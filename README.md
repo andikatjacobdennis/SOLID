@@ -86,7 +86,7 @@ SOLID/
 ## Development Setup
 
 1. **Requirements**:
-   - .NET 6+ SDK
+   - .NET 9+ SDK
    - Visual Studio 2022 or VS Code
 
 2. **Open Solution**:
