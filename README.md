@@ -327,65 +327,79 @@ sequenceDiagram
 
 **Derived or child classes must be substitutable for their base or parent classes**
 
-### Class Diagram
+### C# Code Example (Anti-LSP)
 
-```mermaid
-classDiagram
-    class IShape {
-        +int GetArea()
+```csharp
+using System;
+
+namespace AntiLSPExample
+{
+    // Rectangle class
+    public class Rectangle
+    {
+        public virtual int Width { get; set; }
+        public virtual int Height { get; set; }
+
+        public int GetArea()
+        {
+            return Width * Height;
+        }
     }
 
-    class Rectangle {
-        +int Width
-        +int Height
-        +Rectangle(int width, int height)
-        +int GetArea()
+    // Square inherits from Rectangle (Anti-LSP)
+    public class Square : Rectangle
+    {
+        public override int Width
+        {
+            get { return base.Width; }
+            set
+            {
+                base.Width = value;
+                base.Height = value; // Side effect: changing Width also changes Height
+            }
+        }
+
+        public override int Height
+        {
+            get { return base.Height; }
+            set
+            {
+                base.Height = value;
+                base.Width = value; // Side effect: changing Height also changes Width
+            }
+        }
     }
 
-    class Square {
-        +int Side
-        +Square(int side)
-        +int GetArea()
+    // A utility class to demonstrate LSP violation
+    public class AreaCalculator
+    {
+        public static void PrintArea(Rectangle rectangle)
+        {
+            rectangle.Width = 5;
+            rectangle.Height = 10;
+
+            // Expected: 5 * 10 = 50
+            // But if rectangle is actually a Square, it will be 10 * 10 = 100
+            Console.WriteLine("Area: " + rectangle.GetArea());
+        }
     }
 
-    class AreaCalculator {
-        +static void PrintArea(IShape shape)
-    }
+    // Test the Anti-LSP scenario
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Rectangle rectangle = new Rectangle();
+            Square square = new Square();
 
-    class Program {
-        +void Main()
+            AreaCalculator.PrintArea(rectangle); // Output: Area: 50
+            AreaCalculator.PrintArea(square);    // Output: Area: 100 (unexpected!)
+        }
     }
-
-    IShape <|.. Rectangle
-    IShape <|.. Square
-    Program --> Rectangle : uses
-    Program --> Square : uses
-    AreaCalculator --> IShape : uses
+}
 ```
 
-### Sequence Diagram
-
-```mermaid
-sequenceDiagram
-    participant Program
-    participant Rectangle
-    participant Square
-    participant AreaCalculator
-    participant Console
-
-    Program->>Rectangle: new Rectangle(5, 10)
-    Program->>Square: new Square(5)
-
-    Program->>AreaCalculator: PrintArea(rectangle)
-    AreaCalculator->>Rectangle: GetArea()
-    Rectangle-->>AreaCalculator: return 50
-    AreaCalculator->>Console: Print "Area: 50"
-
-    Program->>AreaCalculator: PrintArea(square)
-    AreaCalculator->>Square: GetArea()
-    Square-->>AreaCalculator: return 25
-    AreaCalculator->>Console: Print "Area: 25"
-```
+### C# Code Solution (LSP)
 
 ```csharp
 using System;
@@ -454,6 +468,66 @@ namespace LSPExample
         }
     }
 }
+```
+
+### Class Diagram
+
+```mermaid
+classDiagram
+    class IShape {
+        +int GetArea()
+    }
+
+    class Rectangle {
+        +int Width
+        +int Height
+        +Rectangle(int width, int height)
+        +int GetArea()
+    }
+
+    class Square {
+        +int Side
+        +Square(int side)
+        +int GetArea()
+    }
+
+    class AreaCalculator {
+        +static void PrintArea(IShape shape)
+    }
+
+    class Program {
+        +void Main()
+    }
+
+    IShape <|.. Rectangle
+    IShape <|.. Square
+    Program --> Rectangle : uses
+    Program --> Square : uses
+    AreaCalculator --> IShape : uses
+```
+
+### Sequence Diagram
+
+```mermaid
+sequenceDiagram
+    participant Program
+    participant Rectangle
+    participant Square
+    participant AreaCalculator
+    participant Console
+
+    Program->>Rectangle: new Rectangle(5, 10)
+    Program->>Square: new Square(5)
+
+    Program->>AreaCalculator: PrintArea(rectangle)
+    AreaCalculator->>Rectangle: GetArea()
+    Rectangle-->>AreaCalculator: return 50
+    AreaCalculator->>Console: Print "Area: 50"
+
+    Program->>AreaCalculator: PrintArea(square)
+    AreaCalculator->>Square: GetArea()
+    Square-->>AreaCalculator: return 25
+    AreaCalculator->>Console: Print "Area: 25"
 ```
 
 ## 4. Interface Segregation Principle
