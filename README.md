@@ -4,7 +4,7 @@
 
 **A class should have only one reason to change**
 
-### C# Code Example (Anti-OCP)
+### C# Code Example (Anti-SRP)
 
 ```csharp
 using System;
