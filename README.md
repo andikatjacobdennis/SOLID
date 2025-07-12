@@ -371,81 +371,77 @@ namespace LSPExample
 
 ```csharp
 using System;
-using System.Collections.Generic;
 
-// Interface for vegetarian menu
-public interface IVegetarianMenu
+public interface IPrinter
 {
-    List<string> GetVegetarianItems();
+    void Print(string document);
 }
 
-// Interface for non-vegetarian menu
-public interface INonVegetarianMenu
+public interface IScanner
 {
-    List<string> GetNonVegetarianItems();
+    void Scan(string document);
 }
 
-// Interface for drinks menu
-public interface IDrinkMenu
+public interface IFax
 {
-    List<string> GetDrinkItems();
+    void Fax(string document);
 }
 
-// Class for vegetarian menu
-public class VegetarianMenu : IVegetarianMenu
+// BasicPrinter implements only what it needs (IPrinter)
+public class BasicPrinter : IPrinter
 {
-    public List<string> GetVegetarianItems()
+    public void Print(string document)
     {
-        return new List<string> { "Vegetable Curry", "Paneer Tikka", "Salad" };
+        Console.WriteLine($"Printing: {document}");
     }
 }
 
-// Class for non-vegetarian menu
-public class NonVegetarianMenu : INonVegetarianMenu
+// AdvancedPrinter implements all capabilities
+public class AdvancedPrinter : IPrinter, IScanner, IFax
 {
-    public List<string> GetNonVegetarianItems()
+    public void Print(string document)
     {
-        return new List<string> { "Chicken Curry", "Fish Fry", "Mutton Biryani" };
+        Console.WriteLine($"Printing: {document}");
+    }
+
+    public void Scan(string document)
+    {
+        Console.WriteLine($"Scanning: {document}");
+    }
+
+    public void Fax(string document)
+    {
+        Console.WriteLine($"Faxing: {document}");
     }
 }
 
-// Class for drinks menu
-public class DrinkMenu : IDrinkMenu
-{
-    public List<string> GetDrinkItems()
-    {
-        return new List<string> { "Water", "Soda", "Juice" };
-    }
-}
-
+// Example usage
 class Program
 {
-    static void DisplayVegetarianMenu(IVegetarianMenu menu)
-    {
-        Console.WriteLine("Vegetarian Menu:");
-        foreach (var item in menu.GetVegetarianItems())
-        {
-            Console.WriteLine($"- {item}");
-        }
-    }
-
-    static void DisplayNonVegetarianMenu(INonVegetarianMenu menu)
-    {
-        Console.WriteLine("Non-Vegetarian Menu:");
-        foreach (var item in menu.GetNonVegetarianItems())
-        {
-            Console.WriteLine($"- {item}");
-        }
-    }
-
     static void Main()
     {
-        var vegMenu = new VegetarianMenu();
-        var nonVegMenu = new NonVegetarianMenu();
-        var drinkMenu = new DrinkMenu();
-        
-        DisplayVegetarianMenu(vegMenu);
-        DisplayNonVegetarianMenu(nonVegMenu);
+        IPrinter basicPrinter = new BasicPrinter();
+        basicPrinter.Print("Basic Document");
+
+        AdvancedPrinter advancedPrinter = new AdvancedPrinter();
+        advancedPrinter.Print("Advanced Document");
+        advancedPrinter.Scan("Advanced Document");
+        advancedPrinter.Fax("Advanced Document");
+    }
+}
+    class Program
+    {
+        static void Main()
+        {
+            IPrinter basic = new BasicPrinter();
+            basic.Print("Basic Document");
+
+            // Using AdvancedPrinter through its full class, not interfaces
+            AdvancedPrinter advanced = new AdvancedPrinter();
+            advanced.Print("Advanced Document");
+            advanced.Scan("Advanced Document");
+            advanced.Fax("Advanced Document");
+        }
     }
 }
 ```
