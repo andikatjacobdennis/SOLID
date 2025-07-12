@@ -1,103 +1,118 @@
 # SOLID Principles in C#
 
-A hands-on repository demonstrating SOLID principles with clean C# examples, designed for interview preparation and quick reference.
+A comprehensive reference for SOLID principles with practical C# examples, designed for interview preparation and software design mastery.
 
 ## Repository Structure
 
-```
+```bash
 SOLID/
-│   SOLID_Principles.sln
-│
-├───1_SRP/
-│       1_SRP.csproj
-│       Anti-SRP.cs          # Violation example
-│       Program.cs           # Main program
-│       SRP-Diagrams.md      # Class & sequence diagrams
-│       SRP-Solution.cs      # Proper implementation
-│
-├───2_OCP/
-│       2_OCP.csproj
-│       Anti-OCP.cs
-│       OCP-Diagrams.md
-│       OCP-Solution.cs
-│       Program.cs
-│
-├───3_LSP/
-│       3_LSP.csproj
-│       Anti-LSP.cs
-│       LSP-Diagrams.md
-│       LSP-Solution.cs
-│       Program.cs
-│
-├───4_ISP/
-│       4_ISP.csproj
-│       Anti-ISP.cs
-│       ISP-Diagrams.md
-│       ISP-Solution.cs
-│       Program.cs
-│
-└───5_DIP/
-        5_DIP.csproj
-        Anti-DIP.cs
-        DIP-Diagrams.md
-        DIP-Solution.cs
-        Program.cs
+├── .gitignore
+├── interview-questions.md      # Common interview questions
+├── LICENSE
+├── README.md                   # This file
+└── code/                       # All implementation code
+    ├── SOLID_Principles.sln    # Main solution file
+    ├── 1_SRP/                  # Single Responsibility Principle
+    │   ├── 1_SRP.csproj
+    │   ├── Anti-SRP.cs         # Violation example
+    │   ├── Program.cs          # Demo program
+    │   ├── SRP-Diagrams.md     # Visual diagrams
+    │   └── SRP-Solution.cs     # Proper implementation
+    ├── 2_OCP/                  # Open/Closed Principle
+    │   ├── 2_OCP.csproj
+    │   ├── Anti-OCP.cs
+    │   ├── OCP-Diagrams.md
+    │   ├── OCP-Solution.cs
+    │   └── Program.cs
+    ├── 3_LSP/                  # Liskov Substitution Principle
+    │   ├── 3_LSP.csproj
+    │   ├── Anti-LSP.cs
+    │   ├── LSP-Diagrams.md
+    │   ├── LSP-Solution.cs
+    │   └── Program.cs
+    ├── 4_ISP/                  # Interface Segregation Principle
+    │   ├── 4_ISP.csproj
+    │   ├── Anti-ISP.cs
+    │   ├── ISP-Diagrams.md
+    │   ├── ISP-Solution.cs
+    │   └── Program.cs
+    └── 5_DIP/                  # Dependency Inversion Principle
+        ├── 5_DIP.csproj
+        ├── Anti-DIP.cs
+        ├── DIP-Diagrams.md
+        ├── DIP-Solution.cs
+        └── Program.cs
+
 ```
 
-## How to Use
+## How to Use This Repository
 
-1. **Clone the repository**:
+### For Study
+
+1. **Explore by Principle**:
+
    ```bash
-   git clone https://github.com/andikatjacobdennis/SOLID.git
+   cd code/1_SRP   # Start with SRP
+   dotnet run      # Execute the examples
    ```
 
-2. **Open in Visual Studio**:
-   - Load `SOLID_Principles.sln`
-   - Each principle is in its own project
+2. **Compare Implementations**:
+   - `Anti-*.cs` → Violation pattern
+   - `*-Solution.cs` → Correct implementation
+   - `*-Diagrams.md` → Visual representation
 
-3. **Run Examples**:
-   - Compare `Anti-*.cs` (violations) with `*-Solution.cs`
-   - Execute `Program.cs` to see principles in action
+### For Interview Prep
 
-## Quick Navigation
+1. **Review Questions**:
 
-| Principle | Key Files | Description |
-|-----------|-----------|-------------|
-| **SRP** | `1_SRP/` | Single Responsibility - One class, one purpose |
-| **OCP** | `2_OCP/` | Open/Closed - Extend without modifying |
-| **LSP** | `3_LSP/` | Liskov Substitution - Substitutability |
-| **ISP** | `4_ISP/` | Interface Segregation - Small, focused interfaces |
-| **DIP** | `5_DIP/` | Dependency Inversion - Depend on abstractions |
-
-## Study Guide
-
-1. **For Each Principle**:
-   - Read the anti-pattern (`Anti-*.cs`) first
-   - Compare with the solution (`*-Solution.cs`)
-   - Review diagrams (`*-Diagrams.md`)
-   - Run the examples
-
-2. **Interview Prep**:
    ```bash
-   # Quick review command (Linux/Mac)
-   grep -r "// Key Point" .
+   interview-questions.md
    ```
 
-## Key Features
+2. **Quick Reference**:
+   - Each principle has its own folder
+   - Diagrams provide visual memory aids
 
-- **Isolated Examples**: Each principle in its own project
-- **Visual Diagrams**: Mermaid diagrams for clear understanding
-- **Side-by-Side Comparison**: Violations vs proper implementations
-- **Ready-to-Run**: Fully functional code examples
-- **Interview Focused**: Clean, concise examples perfect for discussion
+## SOLID Principles Cheat Sheet
 
-## Contribution
+| Principle | Definition                                                                                                         | Example Location   |
+|-----------|--------------------------------------------------------------------------------------------------------------------|--------------------|
+| **S**RP   | A class should have only one reason to change                                                                      | `code/1_SRP/`      |
+| **O**CP   | Software entities (classes, modules, functions, etc.) should be open for extension, but closed for modification    | `code/2_OCP/`      |
+| **L**SP   | Derived or child classes must be substitutable for their base or parent classes                                    | `code/3_LSP/`      |
+| **I**SP   | Do not force any client to implement an interface which is irrelevant to them                                      | `code/4_ISP/`      |
+| **D**IP   | High-level modules should not depend on low-level modules. Both should depend on abstractions                      | `code/5_DIP/`      |
 
-Found an issue or have an improvement?
-1. Fork the repository
-2. Create a feature branch
-3. Submit a pull request
+## Development Setup
 
-## License 📄
+1. **Requirements**:
+   - .NET 6+ SDK
+   - Visual Studio 2022 or VS Code
 
-MIT License - Free for learning and interview preparation
+2. **Open Solution**:
+
+   ```bash
+   cd code
+   start SOLID_Principles.sln
+   ```
+
+3. **Run All Tests**:
+
+   ```bash
+   dotnet test
+   ```
+
+## Contribution Guidelines
+
+1. **Reporting Issues**:
+   - Check existing issues first
+   - Include reproduction steps
+
+2. **Suggesting Improvements**:
+   - Fork the repository
+   - Create a feature branch
+   - Submit a pull request
+
+## License
+
+MIT License - See [LICENSE](LICENSE) for details.

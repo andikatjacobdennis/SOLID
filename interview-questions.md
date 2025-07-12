@@ -2,10 +2,12 @@
 
 ## Single Responsibility Principle (SRP)
 
-### Question 1:
+### Question 1
+
 "You have a class that fetches data from an API, parses the JSON response, logs the data, and saves it to a database. How would you apply SRP here?"
 
-### C# Code Example (Anti-SRP):
+### C# Code Example (Anti-SRP)
+
 ```csharp
 using System;
 using System.Net;
@@ -28,7 +30,8 @@ public class DataProcessor
 }
 ```
 
-### Follow-up Answer:
+### Follow-up Answer (SRP)
+
 To follow SRP, we should split the responsibilities into separate classes:
 
 ```csharp
@@ -66,10 +69,12 @@ repository.Save(data);
 
 ## Open/Closed Principle (OCP)
 
-### Question 2:
+### Question 2
+
 "How can the Strategy Pattern support the Open/Closed Principle? Can you provide an example where it fails to do so if misused?"
 
-### C# Code Prompt:
+### C# Code Prompt (Anti-OCP)
+
 ```csharp
 using System;
 
@@ -104,7 +109,8 @@ public class CheckoutService
 }
 ```
 
-### Follow-up Answer:
+### Follow-up Answer (OCP)
+
 If someone adds conditional logic inside `ApplyDiscount`, it would violate OCP:
 
 ```csharp
@@ -122,13 +128,14 @@ public class ConditionalDiscount : IDiscountStrategy
 
 The correct approach is to create separate strategy classes for each discount type and compose them as needed.
 
-
 ## Liskov Substitution Principle (LSP)
 
-### Question 3:
+### Question 3
+
 "Suppose you have a base class `Bird` with a method `Fly()`, and then a subclass `Penguin`. How would you redesign this hierarchy to follow LSP?"
 
-### C# Problem Code:
+### C# Problem Code (Anti-LSP)
+
 ```csharp
 using System;
 
@@ -149,7 +156,8 @@ public class Penguin : Bird
 }
 ```
 
-### Follow-up Answer:
+### Follow-up Answer (LSP)
+
 Better design would separate flying capability:
 
 ```csharp
@@ -171,10 +179,12 @@ public class Penguin : Bird { }
 
 ## Interface Segregation Principle (ISP)
 
-### Question 4:
+### Question 4
+
 "How would you refactor an interface with 10 methods, of which only 3 are used by most implementers?"
 
-### C# Code Prompt:
+### C# Code Prompt (Anti-ISP)
+
 ```csharp
 public interface IWorker
 {
@@ -187,7 +197,8 @@ public interface IWorker
 }
 ```
 
-### Follow-up Answer:
+### Follow-up Answer (ISP)
+
 Split into role-specific interfaces:
 
 ```csharp
@@ -207,21 +218,24 @@ public class Developer : IWorkable, IFeedable, IRestable
 ```
 
 Forcing unused methods leads to:
+
 1. Bloated implementations
 2. Violation of SRP
 3. Confusing API contracts
 4. Potential NotImplementedExceptions
 
-
 ## Dependency Inversion Principle (DIP)
 
-### Question 5:
+### Question 5
+
 "What's the difference between Dependency Injection and Dependency Inversion? Are they always used together?"
 
-### Question 6:
+### Question 6
+
 "In a plugin architecture, how would you apply DIP so that plugins don't tightly couple to the main system?"
 
-### C# Code Prompt:
+### C# Code Prompt (Anti-DIP)
+
 ```csharp
 public interface IDataExporter
 {
@@ -244,21 +258,24 @@ public class ReportGenerator
 }
 ```
 
-### Follow-up Answers:
+### Follow-up Answers (DIP)
 
 **Question 5 Answer:**
+
 - **Dependency Inversion Principle** is a design principle stating that high-level modules shouldn't depend on low-level modules (both should depend on abstractions)
 - **Dependency Injection** is an implementation technique to achieve loose coupling
 - They often work together but are distinct concepts
 
 **Question 6 Answer:**
 For plugins:
+
 1. Define core interfaces in a shared assembly
 2. Plugins implement these interfaces
 3. Host application discovers and loads plugins via reflection
 4. Communication happens only through interfaces
 
 Example:
+
 ```csharp
 // In shared contract assembly
 public interface IPlugin
@@ -281,12 +298,14 @@ foreach (var plugin in plugins)
 
 ## Bonus Conceptual Question
 
-### Question 7:
+### Question 7
+
 "What is the difference between the Open/Closed Principle and the Liskov Substitution Principle?"
 
-### Complete Answer:
+### Complete Answer
 
 **Key Difference:**
+
 - OCP is about how to structure your system for easy extension
 - LSP is about how to properly implement inheritance hierarchies
 - OCP violations make the system rigid to changes
