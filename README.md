@@ -138,7 +138,7 @@ class Program
 
 **Software entities (classes, modules, functions, etc.) should be open for extension, but closed for modification**
 
-### Mermaid Class Diagram
+### Class Diagram
 
 ```mermaid
 classDiagram
@@ -165,7 +165,7 @@ classDiagram
 
 ```
 
-### Mermaid Sequence Diagram
+### Sequence Diagram
 
 ```mermaid
 sequenceDiagram
