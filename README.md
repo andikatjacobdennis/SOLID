@@ -536,7 +536,7 @@ sequenceDiagram
 
 ### C# Code Example (Anti-ISP)
 
-```csarp
+```csharp
 using System;
 
 // Violates ISP: Large interface forces implementation of all members
