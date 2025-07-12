@@ -138,6 +138,42 @@ class Program
 
 **Software entities (classes, modules, functions, etc.) should be open for extension, but closed for modification**
 
+### Anti OCP example
+
+```csharp
+using System;
+
+public class PaymentProcessor
+{
+    public void ProcessPayment(string paymentType, double amount)
+    {
+        if (paymentType == "creditcard")
+        {
+            Console.WriteLine($"Processing credit card payment of ${amount}");
+        }
+        else if (paymentType == "paypal")
+        {
+            Console.WriteLine($"Processing PayPal payment of ${amount}");
+        }
+        else
+        {
+            Console.WriteLine("Unsupported payment method");
+        }
+    }
+}
+
+class Program
+{
+    static void Main()
+    {
+        var processor = new PaymentProcessor();
+        
+        processor.ProcessPayment("creditcard", 100.00);
+        processor.ProcessPayment("paypal", 150.00);
+    }
+}
+```
+
 ### Class Diagram
 
 ```mermaid
