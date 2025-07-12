@@ -1,8 +1,8 @@
-# SOLID Principles in C# 🏗️
+# SOLID Principles in C#
 
 A hands-on repository demonstrating SOLID principles with clean C# examples, designed for interview preparation and quick reference.
 
-## Repository Structure 📂
+## Repository Structure
 
 ```
 SOLID/
@@ -44,7 +44,7 @@ SOLID/
         Program.cs
 ```
 
-## How to Use 🛠️
+## How to Use
 
 1. **Clone the repository**:
    ```bash
@@ -59,7 +59,7 @@ SOLID/
    - Compare `Anti-*.cs` (violations) with `*-Solution.cs`
    - Execute `Program.cs` to see principles in action
 
-## Quick Navigation 🔍
+## Quick Navigation
 
 | Principle | Key Files | Description |
 |-----------|-----------|-------------|
@@ -69,7 +69,7 @@ SOLID/
 | **ISP** | `4_ISP/` | Interface Segregation - Small, focused interfaces |
 | **DIP** | `5_DIP/` | Dependency Inversion - Depend on abstractions |
 
-## Study Guide 📚
+## Study Guide
 
 1. **For Each Principle**:
    - Read the anti-pattern (`Anti-*.cs`) first
@@ -83,7 +83,7 @@ SOLID/
    grep -r "// Key Point" .
    ```
 
-## Key Features ✨
+## Key Features
 
 - **Isolated Examples**: Each principle in its own project
 - **Visual Diagrams**: Mermaid diagrams for clear understanding
@@ -91,7 +91,7 @@ SOLID/
 - **Ready-to-Run**: Fully functional code examples
 - **Interview Focused**: Clean, concise examples perfect for discussion
 
-## Contribution 🤝
+## Contribution
 
 Found an issue or have an improvement?
 1. Fork the repository
